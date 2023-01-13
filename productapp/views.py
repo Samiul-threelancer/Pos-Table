@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Product, User
-from .serializers import ProductSerializer
+from .models import Product, User, SavedProduct
+from .serializers import ProductSerializer, SavedProductSerializer
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
@@ -43,6 +43,10 @@ class ProductViewSet(viewsets.ModelViewSet):
     # permission_classes = [AllowAny]
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+
+class SavedProductViewSet(viewsets.ModelViewSet):
+    queryset = SavedProduct.objects.all()
+    serializer_class = SavedProductSerializer
 
 
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product
+from .models import Product, SavedProduct
 from rest_framework import  serializers
 from rest_framework.permissions import IsAuthenticated
 from django.db import models
@@ -37,3 +37,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ['id', 'ProductName', 'ProductSize', 'ProductPrice', 'ProductQuantity', 'PurchaseDate']
 
+class SavedProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SavedProduct
+        fields = '__all__'
