@@ -12,6 +12,7 @@ import Update from './components/Update';
 import Accordion from './components/Accordion';
 import { PosTable } from './components/PosTable';
 import Test from './components/testonly/Test';
+import { PosFunction } from './components/PosFunction';
 
 
 
@@ -64,6 +65,7 @@ function App() {
           <Route exact path='/' component={Login}/>
           <Route exact path ='/Accordion' component={Accordion} />
           <Route exact path ='/test' component={Test} />
+          <Route exact path ='/posfunction' component={PosFunction} />
         </header>
       </div>
    

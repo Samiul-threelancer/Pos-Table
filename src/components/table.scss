@@ -6,7 +6,11 @@
     align-items: center;
     margin-bottom: 20px;
     
-   
+   .invoice{
+    @page{
+        size: 2.5in 1.5in;
+    }
+   }
     
     .input-field{
        margin-bottom: 5px;
