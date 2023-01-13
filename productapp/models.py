@@ -6,6 +6,13 @@ class User(AbstractUser):
     # USERNAME_FIELD 
 
     
+class SavedProduct(models.Model):
+    ProductName = models.CharField(max_length=200)
+    ProductSize = models.CharField(max_length=200)
+    ProductPrice = models.IntegerField()
+    ProductQuantity = models.IntegerField()
+    NetTotal = models.IntegerField()
+
 
 class Product(models.Model):
     ProductName = models.CharField(max_length=200)
