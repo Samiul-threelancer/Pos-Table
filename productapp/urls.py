@@ -9,7 +9,7 @@ from productapp.views import RegisterApi, AllUser, SavedProduct, SavedProductVie
 router = DefaultRouter()
 router.register('products', views.ProductViewSet)
 router.register('all/register', AllUser, basename='all_user_regestration')
-router.register('api/savedproduct/', views.SavedProductViewSet, basename='SavedProductViewSet')
+router.register('savedproduct', views.SavedProductViewSet, basename='SavedProductViewSet')
 
 urlpatterns = [
     path('', include(router.urls)),

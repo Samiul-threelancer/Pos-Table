@@ -11,6 +11,7 @@ class SavedProduct(models.Model):
     ProductSize = models.CharField(max_length=200)
     ProductPrice = models.IntegerField()
     ProductQuantity = models.IntegerField()
+    VatTotal = models.IntegerField()
     NetTotal = models.IntegerField()
 
 
