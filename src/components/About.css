@@ -1,0 +1,141 @@
+.pictures{
+    height: 800px;
+}
+.caption{
+    margin-bottom: 300px;
+}
+.title{
+    width: 50%;
+    font-size: 50px;
+    font-weight: 700;
+    font-family: 'Times New Roman', Times, serif;
+    color: rgb(158, 13, 13) !important;
+}
+.description{
+    width: 30%;
+    font-size: 25px;
+    color: #faf4f4 !important;
+}
+.picture-button{
+    width: 8%;
+    height: 40px;
+    font-weight: 700 !important;
+    border-radius: 20px !important;
+    margin-right: 1200px !important;
+}
+
+/* card section start */
+
+.parent-class {
+    margin-left: 3px !important;
+   
+   
+}
+.sub-class{
+    width: 400px !important;
+    height: 400px !important;
+   
+}
+
+.images{
+    height: 150px !important;  
+    object-fit: contain;
+    column-gap: 10px !important;
+    
+    
+}
+.card-body{
+    text-align: center;
+}
+
+.card-title{
+    font-size: 20px;
+    
+}
+.card-text{
+    font-size: 15px;
+}
+.card-price{
+    font-size: 18px;
+    color: rgb(191, 9, 9);
+    font-weight: 700;
+}
+/* card section end  */
+
+
+
+/* Fare section start  */
+
+.fare-text{
+    font-size: 30px;
+    font-weight: 300;
+
+}
+.sub-header{
+    height: 70px!important;
+    display: flex;
+    justify-content: space-between;
+    
+}
+.from-fares{
+    color: gray;
+    margin-top: 10px;
+}
+.dropdown-fares{
+    column-gap: 10px!important;
+    margin-bottom: 20px!important;
+}
+
+/* .dropdown-content{
+    font-size: 30px;
+    border-color: none;
+} */
+.dropbtn{
+    width: 350px;
+    height: 50px;
+    border: outset;
+   
+    
+}
+::placeholder{
+    color: #5c0931;
+    font-size: 20px;
+}
+
+.dropdown-content {
+    
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 450px;
+    height: 90px;
+
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown:hover .dropbtn {
+    background-color: white;
+    border-color: rgb(139, 139, 255);
+}
+.dropdown-description{
+    font-size: 17px;
+    color: gray;
+}
+.best-price{
+    display: flex;
+    justify-content: end; 
+}
+.icon-title{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.sav{
+    margin-bottom: 20px!important;
+    
+}
+
+

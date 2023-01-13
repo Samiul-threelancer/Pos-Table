@@ -1,0 +1,232 @@
+
+.container1{
+    
+    margin-left: 50px ;
+
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+   
+    
+}
+.header-title{
+    font-size: 1.75rem;
+    color: rgb(0, 0, 0);
+}
+.form input{
+
+width: 150px !important;
+height: 50px;
+border-radius: 5px;
+}
+.form{
+    padding-top:25px ;
+    font-size: 1.2rem;
+   
+}
+
+
+
+.main{
+    max-width: 1150px;
+    column-gap: 10px !important; 
+    margin-top: 50px;
+    
+    /* margin-top: 100px; */
+    padding-left: 1%;
+    padding-right: 1%;
+    box-sizing: border-box;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: rgb(247, 244, 240);
+}
+
+@media screen and (max-width:1200px){
+    .main{
+        
+        width: 80%;
+        height: 450px;
+        
+        
+    }
+    .header-title{
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+    }
+
+    /* .card-button{
+        margin-left: 50px !important;
+        margin-bottom: 15px;
+    } */
+    .label{
+        font-size: 8px;
+    }
+
+    
+    
+}
+
+
+@media screen and (max-width:600px){
+    .main{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 450px;
+        
+    }
+    .header-title{
+        color: rgb(218, 20, 20);
+        font-size: 16px;
+    }
+
+    .card-button{
+        margin-left: 50px !important;
+        margin-bottom: 15px;
+    }
+    .main.label{
+        font-size: 20px;
+    }
+
+    
+    
+}
+
+
+
+
+.tableClass{
+    width: 60%;
+    margin-top: 100px !important;  
+    text-align: center;  
+}
+
+@media screen and ( max-width: 600px){
+    .tableClass{
+        width: 60%;
+    }
+    
+}
+
+.btn-Edit{
+    width: 80px;
+    height: 30px;
+    align-items: center;
+    background-color: rgb(244, 247, 243);
+}
+.btn-Edit:hover{
+    background-color: rgb(165, 174, 182);
+}
+.btn-Delete{
+    width: 80px;
+    height: 30px;
+    align-items: center;
+
+    background-color: rgb(241, 237, 237);
+}
+.btn-Delete:hover{
+    background-color: rgb(165, 174, 182
+    
+    );
+}
+
+/* poss  */
+.POS-table{
+    /* min-width: 400px; */
+    height: 250px;
+    text-align: left;
+    background-color: rgb(255, 255, 255);
+    margin-top: 50px;
+    margin-right: 50px!important;
+    row-gap: 20px !important;
+    font-family: monospace;
+    border-style: 1px solid black;
+    border-width: 5px;
+    
+}
+@media screen and (max-witdh:600px){
+    .POS-table{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: rgb(189, 175, 175);
+
+    }
+}
+
+/* .header-subtotal{
+    min-width: 300px;
+} */
+.pos-header{
+    /* background-color: #ddd; */
+    /* padding-bottom: 300px; */
+    font-size: 15px !important;
+    padding: 4px;
+   
+}
+
+.print-btn{
+    width: 110px;
+
+}
+
+.redbody{
+padding-top: 20px ;
+
+}
+.Pos-part{
+    font-family: monospace;
+    /* .Pos-part.tbody{
+        font-family: monospace;
+    } */
+}
+.tbody{
+    font-family: monospace;
+}
+.NIT_header{
+    align-items: center;
+}
+
+.card-button{
+    
+    width: 90px;
+    height: 50px;
+}
+.cardbutton{
+    margin-top: 25px;
+}
+.header-title{
+    padding-bottom: 5px;
+}
+.search{
+    margin-bottom: 20px;
+    
+}
+.search input{
+    width: 500px;
+    height: 30px; 
+    
+}
+.search label {
+    font-size: 1.5rem;
+    font-weight: bold ;
+}
+.removebutton{
+    background-color: aliceblue;
+}
+.removebutton:hover{
+    background-color: rgb(80, 81, 82); 
+
+}
+/* .parent{
+    margin
+} */
+
+@media print{
+    .parencontainer{
+        visibility: hidden;
+    }
+    .nitheader{
+        visibility: visible;
+    }
+}
