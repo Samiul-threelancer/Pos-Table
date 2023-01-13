@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { product_submit, get_product, del_product } from './API';
+import { product_submit, get_product, del_product, SavedProduct } from './API';
 import { PlusOutlined, DeleteOutlined, Button, Card, Input, message, Table, Select } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
 import { SelectProduct } from './SelectProduct';
@@ -11,24 +11,30 @@ import { useLocation } from 'react-router-dom';
 
 import './table.scss'
 import { Item } from 'semantic-ui-react';
+// import { SubmitSavedproduct } from './SubmitSavedproduct';
 
 
 
 export const PosTable = () => {
     
-  // var currentdate = new Date(); 
 
-   //console.log(cardInfo)\
+
+
    const ref = useRef();
+   var totalprice = 0;
+   
+   var vat_value = 0
     const [productinfo, setproductinfo] = useState([])
-    console.log(productinfo.length)
-    var totalprice = 0;
+   
+    
 
     const [productname, setproductname] = useState('')
     const [productSize, setProductSize] = useState('')
     const [productPrice, setProductPrice] = useState('')
     const [productQuantity, setProductQuantity] = useState('')
     const [purchaseDate, setpurchaseDate] = useState('')
+    const [totalPrice, setTotalPrice] = useState()
+    const [vatTotal, setvatTotal] = useState()
     // const [callback, setCll]
     // console.log(productname, productSize, purchaseDate)
     const [carddErr, setcardErr] = useState()
@@ -46,8 +52,9 @@ export const PosTable = () => {
       
       message.success("Print Done")
     }
-
+   
     ClearAll()
+ 
    
 
   }
@@ -67,7 +74,7 @@ export const PosTable = () => {
 
                 const product = await get_product( TOKEN,{signal: ac.signal } )
 
-                console.log(product)
+                //console.log(product)
                 setproductinfo(product.data)
                 setpurchaseDate(product.data.PurchaseDate)
                 // console.log(first)
@@ -91,7 +98,38 @@ export const PosTable = () => {
 
     }, [useLocation()])
 
- 
+
+    
+
+    const SubmitSavedproduct = async(e)=>{
+      e.preventDefault()  
+      console.log("savedproduct")
+          
+        // console.log(productname, productSize)
+
+        const payload = {
+            // ...productinfo,
+            "ProductName": productname,
+            "ProductSize": productSize,
+            "ProductPrice": productPrice,
+            "ProductQuantity": productQuantity,
+            "VatTotal": totalPrice,
+            "NetTotal": vatTotal,
+          
+            }
+            console.log(payload)
+
+            try {
+
+                const res = await SavedProduct(payload, TOKEN)
+                message.success("New product added")
+                console.log("paylodad", payload)
+
+              } 
+                  catch (err) {
+                  console.warn(err.message)             
+              }
+    }
 
 
     const TableSubmit = async(e)=>{
@@ -165,7 +203,7 @@ export const PosTable = () => {
         key: 'id',
         render: (id) => <a onClick={async()=>{
           del_product(id,TOKEN)
-          message.success(`This product is deleted`)
+          message.success('This product is deleted')
           
           
         }}> <HiTrash size={25} /> </a>,
@@ -180,7 +218,7 @@ export const PosTable = () => {
     <form action="" id='reset'>
       <div className='card-info'>
       <Card title="Add Product"  style={{ width: 400 }}>
-      {/* firstcard */}
+      
       <div className=''>
 
       <span>{carddErr}</span>
@@ -216,6 +254,7 @@ export const PosTable = () => {
             return(
               <tr>
               <td>{id.ProductName }=</td>
+              
               <td>{id.ProductPrice }&nbsp;BDT</td>
                <td style={{visibility:"hidden"}}>{totalprice = totalprice+id.ProductPrice}</td>
 
@@ -223,13 +262,25 @@ export const PosTable = () => {
               </tr>
             )
                })}
+
+               
+           ________________________
+              <tr>   
+              <td>VAT & Taxes</td>
+              <td onClick={()=>setvatTotal(vat_value)}>{vat_value = totalprice*0.25}&nbsp;BDT</td>
+
+              </tr>
             
             ________________________
               <tr>   
               <td>Net Total</td>
-              <td>{totalprice}&nbsp;BDT</td>
+              <td onClick={()=>setSelectProduct(totalprice)}>{totalprice = totalprice+vat_value}&nbsp;BDT</td>
+              {/* {setSelectProduct(totalprice)} */}
+              
               
               </tr>
+
+              
             ________________________ 
               <tr>
               <td>Billed By:</td>
@@ -251,14 +302,17 @@ export const PosTable = () => {
         </div>
 
         <ReactToPrint 
-          trigger={() => <Button size={25} 
-          onClick={Onclick}>
+          trigger={() => 
+          <Button size={25} 
+          onClick={Onclick}
+          
+          >
           <PrinterOutlined />Confirm & Print</Button>} 
           content={()=>ref.current} 
           pageStyle="@page {size: 8.5in 4.25in}"/>
 
         
-
+              <Button onClick={(e)=>SubmitSavedproduct(e)}>Confirm</Button>
       
         </div>
          

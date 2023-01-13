@@ -5,3 +5,4 @@ export const product_submit = async (data, TOKEN) => await axios.post(` ${baseur
 export const get_product = async ( TOKEN, signal) => await axios.get(` ${baseurl}/products/`, {headers: {Authorization: `Bearer ${TOKEN}`}}, signal);
 export const del_product = async (id, TOKEN) => await axios.delete(` ${baseurl}/products/${id}/`, {headers: {Authorization: `Bearer ${TOKEN}`}});
 export const loginAPI = async(data) => await axios.post(` ${baseurl}/api/login/`, data);
+export const SavedProduct = async(data) => await axios.post(` ${baseurl}/savedproduct/`, data);
