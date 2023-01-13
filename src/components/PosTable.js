@@ -167,7 +167,7 @@ export const PosTable = () => {
         }}> <HiTrash size={25} /> </a>,
       },
 
-
+//hello
       
       {
         title:'Action',
