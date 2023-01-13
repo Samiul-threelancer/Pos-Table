@@ -66,6 +66,7 @@ function App() {
           <Route exact path ='/Accordion' component={Accordion} />
           <Route exact path ='/test' component={Test} />
           <Route exact path ='/posfunction' component={PosFunction} />
+          <Route exact path ='/products' component={Products} />
         </header>
       </div>
    
