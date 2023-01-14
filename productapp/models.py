@@ -9,10 +9,10 @@ class User(AbstractUser):
 class SavedProduct(models.Model):
     ProductName = models.CharField(max_length=200)
     ProductSize = models.CharField(max_length=200)
-    ProductPrice = models.IntegerField()
-    ProductQuantity = models.IntegerField()
-    VatTotal = models.IntegerField()
-    NetTotal = models.IntegerField()
+    ProductPrice = models.FloatField()
+    ProductQuantity = models.FloatField()
+    VatTotal = models.FloatField()
+    NetTotal = models.FloatField()
 
 
 class Product(models.Model):
