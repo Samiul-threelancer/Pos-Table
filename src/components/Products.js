@@ -88,7 +88,7 @@ const Products = () => {
   console.log("search value", search)
 
   const setData = (data1) => {
-    let { id, name, size, price, quantity, date } = data1;
+    let { id, name, size, price, quantity, date }=data1;
     localStorage.setItem('ID', id);
     localStorage.setItem('Product Name', name);
     localStorage.setItem('Product size', size);
