@@ -14,6 +14,7 @@ import { PosTable } from './components/PosTable';
 import Test from './components/testonly/Test';
 import { PosFunction } from './components/PosFunction';
 import { SubmitSavedproduct } from './components/SubmitSavedproduct';
+import Electron from './components/Electron';
 
 
 
@@ -68,6 +69,7 @@ function App() {
           <Route exact path ='/posfunction' component={PosFunction} />
           <Route exact path ='/products' component={Products} />
           <Route exact path ='/savedproducts' component={SubmitSavedproduct} />
+          <Route exact path ='/electron' component={Electron} />
         </header>
       </div>
    

@@ -22,6 +22,7 @@ export const PosTable = () => {
    var totalprice = 0;
    
    var vat_value = 0;
+   
 
    const getDataLocal =()=>{
     const data = localStorage.getItem('products')
@@ -32,12 +33,16 @@ export const PosTable = () => {
       return[]
     }
   }
+  const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt( next.productPrice) * parseInt(next.productQuantity)), 0 )
+  const vat_price = getDataLocal().reduce(( prev, next ) => ( prev +total_price_before*0.25 ), 0 )
+    const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + total_price_before + vat_price), 0 )
+    
 
   console.log("getDataLocal", getDataLocal())
+  console.log("total price before vat", total_price_before)
 
 
-  const vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt( next.productPrice)*0.25 ), 0 )
-  const total_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt( next.productPrice) + vat_price), 0 )
+
 
   console.log("vat__price", vat_price)
   console.log("total__price", total_price)
@@ -55,7 +60,7 @@ export const PosTable = () => {
     const [carddErr, setcardErr] = useState()
     const [selectProduct, setSelectProduct] = useState([])
     
-
+    
 
 
   const ClearAll =()=>{
@@ -236,9 +241,9 @@ const columns = [
               <td>Product</td> 
     
               {/* <td> <h4>Sz</h4></td> */}
-              <td>Qty</td>
-              <td>UP</td> 
-              <td>Amount </td>
+             
+       
+              <td>Qty*Unit </td>
              
               
               </tr>
@@ -250,9 +255,9 @@ const columns = [
               <tr key={i}>
               <td>{id.productname}:</td>
              
-              <td>{id.productQuantity}</td>
-              <td>{id.productPrice}/-</td>
-              <td>{parseFloat(id.productPrice)*id.productQuantity}/-</td>
+              
+              
+              <td>{`${id.productQuantity}*${id.productPrice}=${id.productPrice*id.productQuantity}`}</td>
               
               
              
