@@ -32,6 +32,15 @@ export const PosTable = () => {
       return[]
     }
   }
+
+  console.log("getDataLocal", getDataLocal())
+
+
+  const vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt( next.productPrice)*0.25 ), 0 )
+  const total_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt( next.productPrice) + vat_price), 0 )
+
+  console.log("vat__price", vat_price)
+  console.log("total__price", total_price)
    //mian product info
     const [productinfo, setproductinfo] = useState(getDataLocal())
 
@@ -48,15 +57,7 @@ export const PosTable = () => {
     
 
 
-  //   const setData = (data1) => {
-  //     let { id, productname, productSize, productPrice, productQuantity }=data1;
-  //     localStorage.setItem('ID', id);
-  //     localStorage.setItem('Product Name', productname);
-  //     localStorage.setItem('Product size', productSize);
-  //     localStorage.setItem('Product Price', productPrice);
-  //     localStorage.setItem('Product Quantity', productQuantity)
-      
-  // }
+
   const ClearAll =()=>{
     message.warning("All data clear")
     setproductinfo([])
@@ -95,11 +96,7 @@ export const PosTable = () => {
         return prdouct.ID !== ID;
       })
       setproductinfo(filteredProduct)
-      
-      
-      
-
-    }
+     }
 
 
 
@@ -114,45 +111,7 @@ export const PosTable = () => {
     }
     
   }
-  // const ClearAll = async() =>{
-
-  //   for (const i=0; i<productinfo.length-1; i++){
-  //     {del_product(i, TOKEN)}
-  //   }
-  // }
-    
-      // const getApi =()=>{
-        
-      //   const ac = new AbortController();
-
-      //   (async () => {
-      //       try {
-
-      //           const product = await get_product( TOKEN,{signal: ac.signal } )
-
-      //           console.log(product.data)
-      //           setproductinfo(product.data)
-      //           setpurchaseDate(product.data.PurchaseDate)
-      //           // console.log(first)
-              
-
-      //       } catch (err) {
-      //           console.warn(err.message)
-      //       }
-      //   })()
-
-
-      //   return () => ac.abort();
-      // }
-    
-
-   
-    //  useEffect(() => {
-
-
-    //   getApi()
-
-    // }, [useLocation()])
+ 
 
 
     
@@ -169,59 +128,40 @@ export const PosTable = () => {
             "ProductSize": productSize,
             "ProductPrice": productPrice,
             "ProductQuantity": productQuantity,
-            "VatTotal": totalPrice,
-            "NetTotal": vatTotal,
+            "VatTotal": vat_value,
+            "NetTotal": totalprice,
           
             }
-            // console.log(payload)
+            console.log(payload)
 
-            // try {
+            try {
 
-            //     const res = await SavedProduct(payload, TOKEN)
-            //     message.success("New product added")
-            //     console.log("paylodad", payload)
+                const res = await SavedProduct(payload, TOKEN)
+                message.success("New product added")
+                console.log("paylodad", payload)
 
-            //   } 
-            //       catch (err) {
-            //       console.warn(err.message)             
-            //   }
+              } 
+                  catch (err) {
+                  console.warn(err.message)             
+              }
+              
+              //auto cursor
+      
+        {    
+          var elts = document.getElementsByClassName('name')
+          Array.from(elts).forEach(function(elt){
+          elt.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13 || elt.value.length == 3) {
+          // Focus on the next sibling
+          elt.nextElementSibling.focus()
+          }
+          });
+          })
+        }
+
+
     }
-
-
-    // const TableSubmit = async(e)=>{
-    //   e.preventDefault()
-        
-    //     //console.log(CardHolder, CardNumber, ExpiaryDate, CVC)
-
-    //     if (productname==='' ||productSize==='' ||productPrice==='' ||productQuantity===''){
-    //       setcardErr('Please fill up the fields.')
-    //       return
-    //     }
-
-    //     const data = {
-    //         "ProductName": productname,
-    //         "ProductSize": productSize,
-    //         "ProductPrice": productPrice,
-    //         "ProductQuantity": productQuantity,
-          
-    //         }
-
-    //         try {
-
-    //             const res = await product_submit(data, TOKEN)
-    //             message.success("New product added")
-    //             console.log(data)
-    //             document.getElementById('reset').reset()
-                
-
-    //             // message.success(res.data.message)
-    //           } 
-    //               catch (err) {
-    //               console.warn(err.message)             
-    //           }
-    // }
-    
-
 
 
     
@@ -270,10 +210,12 @@ const columns = [
       <div className=''>
 
       <span>{carddErr}</span>
-      <Input className='input-field' type='input' placeholder='Product Name' name="" value={productname} onChange={(e) => setproductname(e.target.value) } required />
-      <Input className='input-field' type='number' placeholder='Product Size' name="" value={productSize} onChange={(e) => setProductSize(e.target.value)} required />   
-      <Input className='input-field' type='number' placeholder='Price' name="" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
-      <Input className='input-field' type='number' placeholder='Quantity' name="" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
+      
+      <Input className='input-field' type='input' placeholder='Product Name' name="name" id="input1" value={productname} onChange={(e) => setproductname(e.target.value) }  required />
+
+      <Input className='input-field' type='input' placeholder='Product Size' name="name" id="input2" value={productSize} onChange={(e) => setProductSize(e.target.value)} required />   
+      <Input className='input-field' type='number' placeholder='Price' name="name" id="input3" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
+      <Input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
       <div>
       <button type='submit' className='add_card_btn' onClick={handleSubmit} ><HiPlus size={15} /> Add Product</button>
       </div>
@@ -305,14 +247,14 @@ const columns = [
               {productinfo.map((id, i)=>{
                 console.log("productinfo", productinfo)
             return(
-              <tr>
+              <tr key={i}>
               <td>{id.productname}:</td>
              
               <td>{id.productQuantity}</td>
               <td>{id.productPrice}/-</td>
               <td>{parseFloat(id.productPrice)*id.productQuantity}/-</td>
               
-              <td style={{visibility:"hidden"}}>{parseFloat(totalprice = totalprice+parseFloat(id.productPrice))}</td>
+              
              
 
 
@@ -324,19 +266,19 @@ const columns = [
            ________________________
               <tr>   
               <td>VAT & Taxes</td>
-              <td onClick={()=>setvatTotal(vat_value)}>{vat_value =parseFloat(totalprice)* 0.15 }&nbsp;BDT</td>
+              <td>{vat_price}&nbsp;BDT</td>
 
               </tr>
             
             ________________________
               <tr>   
               <td>Net Total</td>
-              <td onClick={()=>setSelectProduct(totalprice)}>{totalprice = parseFloat(totalprice)+vat_value}&nbsp;BDT</td>
+              <td >{total_price}&nbsp;BDT</td>
               {/* {setSelectProduct(totalprice)} */}
               
               
               </tr>
-              {console.log(vatTotal, totalPrice)}
+             
 
               
             ________________________ 
@@ -345,34 +287,21 @@ const columns = [
               <td>Mr Chandler </td>
               
               </tr>
-
-             
-      
-          
-      
-              </table>
-            
-
-            
-         
-       
-
-        </div>
-
-        <ReactToPrint 
+              <ReactToPrint 
           trigger={() => 
           <Button size={25} 
           onClick={Onclick}
           
           >
-          <PrinterOutlined />Confirm & Print</Button>} 
+          <PrinterOutlined />Print</Button>} 
           content={()=>ref.current} 
           pageStyle="@page {size: 8.5in 8.5in}"/>
-
-        
-              <Button onClick={(e)=>SubmitSavedproduct(e)}>Confirm</Button>
-            
       
+        </table>
+      
+
+        </div>
+   
         </div>
          
      
@@ -386,25 +315,16 @@ const columns = [
 
       
    
+      <Button onClick={(e)=>SubmitSavedproduct(e)}>Save Table</Button>
 
-        <Button onClick={(e)=>ClearAll(e)} type="primary" danger ghost>
-        Clear all
-        </Button>
+      <Button onClick={(e)=>ClearAll(e)} type="primary" danger ghost>Clear Table</Button>
+        
 
       <Table columns={columns} dataSource={productinfo} /> 
-
-
-
-
-
-        
       </div> 
       </div>
       </div>
       </div>
-
-
-
 
       </form>
       </div>
@@ -412,6 +332,3 @@ const columns = [
       </>
       )
       }
-
-
-
