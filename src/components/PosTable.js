@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { SavedProduct } from './API';
+import { InvoiceSave, SavedProduct } from './API';
 import { Button, Card, Input, message, Table } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
 
@@ -31,6 +31,7 @@ export const PosTable = () => {
     }
   }
 
+
     
     
 
@@ -42,37 +43,22 @@ export const PosTable = () => {
     const [productname, setproductname] = useState('')
     const [productSize, setProductSize] = useState('')
     const [productPrice, setProductPrice] = useState('')
-    const [productQuantity, setProductQuantity] = useState('')
-
-    const [carddErr, setcardErr] = useState()
-
+    const [productQuantity, setProductQuantity] = useState(parseInt(1))
+    const [carddErr, setcardErr] = useState('')
     const [invoice, setInvoice] = useState([])
 
-    const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt( next.productPrice) * parseInt(next.productQuantity)), 0 )
-    const vat_price = getDataLocal().reduce(( prev, next ) => ( prev +parseInt(total_price_before*0.25 )), 0 )
-    const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before + vat_price)), 0 )
 
 
-
-
-    console.log("total price before vat", total_price_before)
-
-    console.log("vat__price", vat_price)
-    console.log("total__price", total_price)
-
-    
+        //mathmatical calculation
+        const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
+        const vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
+        const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
     
 
-
-  const ClearAll =()=>{
-    message.warning("All data clear")
-    setproductinfo([])
-
-  }
+        console.log("total price before vat:", total_price_before)
+        console.log("vat__price:", vat_price)
+        console.log("total__price:", total_price)
   
-    
-
-
 
  
     const handleSubmit =(e)=>{
@@ -90,28 +76,20 @@ export const PosTable = () => {
           
       if (productname===''||productSize===''||productPrice===''||productQuantity===''){
         setcardErr("Please all the fields")
-        return
+       return
+      } 
+            setproductinfo([...productinfo, product])
+
+      
       }
-      setproductinfo([...productinfo, product])
 
-    }
-
-        
-
-    
         useEffect(()=>{
 
           localStorage.setItem('products',JSON.stringify(productinfo));
         },[productinfo])
 
-       {
-        var array_invoice = []
-         array_invoice=[[...productinfo], ["Vat:",vat_price], ["Total",total_price]]
-      }
-       console.log("invoice", array_invoice)
-     
 
-
+       
 
     const deleteProduct=(ID)=>{
     
@@ -122,6 +100,16 @@ export const PosTable = () => {
       setproductinfo(filteredProduct)
      }
 
+     const ClearAll =()=>{
+      setproductinfo([])
+      message.warning("All data clear")
+      
+      window.location.reload()
+  
+    }
+
+    
+
 
  
 
@@ -130,28 +118,28 @@ export const PosTable = () => {
 //..............invoice..........saved_product....
     const SubmitSavedproduct = async(e)=>{
       e.preventDefault()  
-      console.log("savedproduct")
-          
-        // console.log(productname, productSize)
+      
+      {
+        setInvoice([...productinfo, vat_price, total_price])
+        console.log("invoiceeeeeeeeeeeee",invoice)
+      }
+      
+      
 
         const payload = {
             // ...productinfo,
-            "ProductName": productname,
-            "ProductSize": productSize,
-            "ProductPrice": productPrice,
-            "ProductQuantity": productQuantity,
-
-
-
-            "VatTotal": vat_price,
-            "NetTotal": total_price,
+            "invoice": invoice,
           
+     
             }
-            console.log(payload)
+            
+            
+            
+            
 
             try {
 
-                const res = await SavedProduct(payload, TOKEN)
+                const res = await InvoiceSave(payload, TOKEN)
                 message.success("New product added")
                 console.log("paylodad", payload)
 
@@ -216,7 +204,7 @@ const columns = [
   return ( 
     <>
     <div className='container'>
-    <form action="" id='reset'>
+    <form action="" id='form'>
       <div className='card-info'>
       <Card title="Add Product"  style={{ width: 400 }}>
       
@@ -225,7 +213,6 @@ const columns = [
       <span style={{color:"red"}}>{carddErr}</span>
       
       <Input className='input-field' type='input' placeholder='Product Name' name="name" id="input1" value={productname} onChange={(e) => setproductname(e.target.value) }  required />
-
       <Input className='input-field' type='input' placeholder='Product Size' name="name" id="input2" value={productSize} onChange={(e) => setProductSize(e.target.value)} required />   
       <Input className='input-field' type='number' placeholder='Price' name="name" id="input3" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
       <Input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
