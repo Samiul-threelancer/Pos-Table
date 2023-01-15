@@ -12,7 +12,7 @@ import './table.scss'
 
 import { v4 as uuidv4 } from 'uuid';
 
-// import { SubmitSavedproduct } from './SubmitSavedproduct';
+
 
 
 
@@ -20,7 +20,6 @@ export const PosTable = () => {
     
    const ref = useRef();
  
-
    const getDataLocal =()=>{
     const data = localStorage.getItem('products')
     if (data){
@@ -30,12 +29,9 @@ export const PosTable = () => {
       return[]
     }
   }
-
-
-    
-    
-
   console.log("getDataLocal", getDataLocal())
+ 
+
  
    //mian product info
     const [productinfo, setproductinfo] = useState(getDataLocal())
@@ -47,6 +43,7 @@ export const PosTable = () => {
     const [carddErr, setcardErr] = useState('')
     const [invoice, setInvoice] = useState([])
 
+   
 
 
         //mathmatical calculation
@@ -58,7 +55,10 @@ export const PosTable = () => {
         console.log("total price before vat:", total_price_before)
         console.log("vat__price:", vat_price)
         console.log("total__price:", total_price)
-  
+        
+         
+        
+        
 
  
     const handleSubmit =(e)=>{
@@ -76,7 +76,7 @@ export const PosTable = () => {
           
       if (productname===''||productSize===''||productPrice===''||productQuantity===''){
         setcardErr("Please all the fields")
-       return
+       
       } 
             setproductinfo([...productinfo, product])
 
@@ -108,21 +108,15 @@ export const PosTable = () => {
   
     }
 
-    
-
-
- 
 
 
     
 //..............invoice..........saved_product....
     const SubmitSavedproduct = async(e)=>{
       e.preventDefault()  
-      
-      {
-        setInvoice([...productinfo, vat_price, total_price])
-        console.log("invoiceeeeeeeeeeeee",invoice)
-      }
+
+      {setInvoice([...productinfo, vat_price, total_price])
+        console.log("invoiceeeeeeeeeeeee",invoice)} 
       
       
 
@@ -132,10 +126,7 @@ export const PosTable = () => {
           
      
             }
-            
-            
-            
-            
+       
 
             try {
 
@@ -250,7 +241,7 @@ const columns = [
               {productinfo.map((id, i)=>{
                 
             return(
-              <tr key={i}>
+              <tr key={id}>
               <td>{id.productname}:</td>
              
               
