@@ -7,9 +7,8 @@
     margin-bottom: 20px;
     
    .invoice{
-    @page{
-        size: 2.5in 1.5in;
-    }
+    font-size: 0.8rem;
+    margin: 10px;
    }
     
     .input-field{

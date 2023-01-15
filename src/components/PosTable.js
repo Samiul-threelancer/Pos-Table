@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { product_submit, get_product, del_product, SavedProduct } from './API';
-import { PlusOutlined, DeleteOutlined, Button, Card, Input, message, Table, Select } from 'antd';
+import { SavedProduct } from './API';
+import { Button, Card, Input, message, Table } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
-import { SelectProduct } from './SelectProduct';
+
 import { PrinterOutlined } from '@ant-design/icons';
 import { TOKEN } from './Action/actiontype';
 import ReactToPrint from 'react-to-print'
 import {useRef} from 'react'
-import { useLocation } from 'react-router-dom';
+
 import './table.scss'
-import { Item } from 'semantic-ui-react';
+
 import { v4 as uuidv4 } from 'uuid';
 
 // import { SubmitSavedproduct } from './SubmitSavedproduct';
@@ -19,10 +19,7 @@ import { v4 as uuidv4 } from 'uuid';
 export const PosTable = () => {
     
    const ref = useRef();
-   var totalprice = 0;
-   
-   var vat_value = 0;
-   
+ 
 
    const getDataLocal =()=>{
     const data = localStorage.getItem('products')
@@ -33,19 +30,12 @@ export const PosTable = () => {
       return[]
     }
   }
-  const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt( next.productPrice) * parseInt(next.productQuantity)), 0 )
-  const vat_price = getDataLocal().reduce(( prev, next ) => ( prev +total_price_before*0.25 ), 0 )
-    const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + total_price_before + vat_price), 0 )
+
+    
     
 
   console.log("getDataLocal", getDataLocal())
-  console.log("total price before vat", total_price_before)
-
-
-
-
-  console.log("vat__price", vat_price)
-  console.log("total__price", total_price)
+ 
    //mian product info
     const [productinfo, setproductinfo] = useState(getDataLocal())
 
@@ -53,12 +43,23 @@ export const PosTable = () => {
     const [productSize, setProductSize] = useState('')
     const [productPrice, setProductPrice] = useState('')
     const [productQuantity, setProductQuantity] = useState('')
-    const [purchaseDate, setpurchaseDate] = useState('')
-    const [totalPrice, setTotalPrice] = useState()
-    const [vatTotal, setvatTotal] = useState()
 
     const [carddErr, setcardErr] = useState()
-    const [selectProduct, setSelectProduct] = useState([])
+
+    const [invoice, setInvoice] = useState([])
+
+    const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt( next.productPrice) * parseInt(next.productQuantity)), 0 )
+    const vat_price = getDataLocal().reduce(( prev, next ) => ( prev +parseInt(total_price_before*0.25 )), 0 )
+    const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before + vat_price)), 0 )
+
+
+
+
+    console.log("total price before vat", total_price_before)
+
+    console.log("vat__price", vat_price)
+    console.log("total__price", total_price)
+
     
     
 
@@ -68,11 +69,12 @@ export const PosTable = () => {
     setproductinfo([])
 
   }
+  
     
 
 
 
-  console.log(productinfo)
+ 
     const handleSubmit =(e)=>{
       e.preventDefault();
      
@@ -84,13 +86,30 @@ export const PosTable = () => {
         productQuantity
 
       }
+      
+          
+      if (productname===''||productSize===''||productPrice===''||productQuantity===''){
+        setcardErr("Please all the fields")
+        return
+      }
       setproductinfo([...productinfo, product])
 
     }
 
-    useEffect(()=>{
-      localStorage.setItem('products',JSON.stringify(productinfo));
-    },[productinfo])
+        
+
+    
+        useEffect(()=>{
+
+          localStorage.setItem('products',JSON.stringify(productinfo));
+        },[productinfo])
+
+       {
+        var array_invoice = []
+         array_invoice=[[...productinfo], ["Vat:",vat_price], ["Total",total_price]]
+      }
+       console.log("invoice", array_invoice)
+     
 
 
 
@@ -104,18 +123,6 @@ export const PosTable = () => {
      }
 
 
-
- 
-
-  const Onclick =()=>{
-
-    const PrintHandle = () =>{
-      console.log('print of the pos');
-      
-      message.success("Print Done")
-    }
-    
-  }
  
 
 
@@ -133,8 +140,11 @@ export const PosTable = () => {
             "ProductSize": productSize,
             "ProductPrice": productPrice,
             "ProductQuantity": productQuantity,
-            "VatTotal": vat_value,
-            "NetTotal": totalprice,
+
+
+
+            "VatTotal": vat_price,
+            "NetTotal": total_price,
           
             }
             console.log(payload)
@@ -152,20 +162,18 @@ export const PosTable = () => {
               
               //auto cursor
       
-        {    
-          var elts = document.getElementsByClassName('name')
-          Array.from(elts).forEach(function(elt){
-          elt.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13 || elt.value.length == 3) {
-          // Focus on the next sibling
-          elt.nextElementSibling.focus()
-          }
-          });
-          })
-        }
-
-
+        // {    
+        //   var elts = document.getElementsByClassName('name')
+        //   Array.from(elts).forEach(function(elt){
+        //   elt.addEventListener("keyup", function(event) {
+        //   // Number 13 is the "Enter" key on the keyboard
+        //   if (event.keyCode === 13 || elt.value.length == 3) {
+        //   // Focus on the next sibling
+        //   elt.nextElementSibling.focus()
+        //   }
+        //   });
+        //   })
+        // }
     }
 
 
@@ -214,7 +222,7 @@ const columns = [
       
       <div className=''>
 
-      <span>{carddErr}</span>
+      <span style={{color:"red"}}>{carddErr}</span>
       
       <Input className='input-field' type='input' placeholder='Product Name' name="name" id="input1" value={productname} onChange={(e) => setproductname(e.target.value) }  required />
 
@@ -233,24 +241,27 @@ const columns = [
         
 
        
-        <div ref={ref} className="invoice" id='invoice' >
+        <div className="invoice" id='invoice' >
           
-              <table style={{}} key={uuidv4}>
+              <table style={{}} key={uuidv4} ref={ref}>
                  <thead>
               <tr>
-              <td>Product</td> 
+              <th>Product</th> 
     
               {/* <td> <h4>Sz</h4></td> */}
              
        
-              <td>Qty*Unit </td>
+              <th>Qty*Unit </th>
              
               
               </tr>
               </thead>
 
+
+              <tbody>
+
               {productinfo.map((id, i)=>{
-                console.log("productinfo", productinfo)
+                
             return(
               <tr key={i}>
               <td>{id.productname}:</td>
@@ -264,10 +275,12 @@ const columns = [
 
 
               </tr>
+            
             )
                })}
+               </tbody>
 
-               
+               <tfoot>
            ________________________
               <tr>   
               <td>VAT & Taxes</td>
@@ -283,26 +296,26 @@ const columns = [
               
               
               </tr>
-             
-
-              
-            ________________________ 
+_____________________ 
               <tr>
               <td>Billed By:</td>
               <td>Mr Chandler </td>
               
               </tr>
-              <ReactToPrint 
+              </tfoot>
+              
+      
+        </table>
+
+        <ReactToPrint 
           trigger={() => 
           <Button size={25} 
-          onClick={Onclick}
+         
           
           >
           <PrinterOutlined />Print</Button>} 
           content={()=>ref.current} 
-          pageStyle="@page {size: 8.5in 8.5in}"/>
-      
-        </table>
+          pageStyle="@page {size: 80mm 80mm}"/>
       
 
         </div>
