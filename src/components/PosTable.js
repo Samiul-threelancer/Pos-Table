@@ -107,54 +107,14 @@ export const PosTable = () => {
       window.location.reload()
   
     }
+ 
+ 
+    const printHandle =()=>{
+  window.print()
+ }
+ const SubmitSavedproduct = () =>{
 
-
-
-    
-//..............invoice..........saved_product....
-    const SubmitSavedproduct = async(e)=>{
-      e.preventDefault()  
-
-      {setInvoice([...productinfo, vat_price, total_price])
-        console.log("invoiceeeeeeeeeeeee",invoice)} 
-      
-      
-
-        const payload = {
-            // ...productinfo,
-            "invoice": invoice,
-          
-     
-            }
-       
-
-            try {
-
-                const res = await InvoiceSave(payload, TOKEN)
-                message.success("New product added")
-                console.log("paylodad", payload)
-
-              } 
-                  catch (err) {
-                  console.warn(err.message)             
-              }
-              
-              //auto cursor
-      
-        // {    
-        //   var elts = document.getElementsByClassName('name')
-        //   Array.from(elts).forEach(function(elt){
-        //   elt.addEventListener("keyup", function(event) {
-        //   // Number 13 is the "Enter" key on the keyboard
-        //   if (event.keyCode === 13 || elt.value.length == 3) {
-        //   // Focus on the next sibling
-        //   elt.nextElementSibling.focus()
-        //   }
-        //   });
-        //   })
-        // }
-    }
-
+ }
 
     
   
@@ -224,34 +184,21 @@ const columns = [
               <table style={{}} key={uuidv4} ref={ref}>
                  <thead>
               <tr>
-              <th>Product</th> 
-    
-              {/* <td> <h4>Sz</h4></td> */}
-             
-       
-              <th>Qty*Unit </th>
-             
-              
+              <th>Q</th>
+              <th>Description</th> 
+              <th>$$</th> 
               </tr>
               </thead>
-
-
               <tbody>
+
 
               {productinfo.map((id, i)=>{
                 
             return(
               <tr key={id}>
-              <td>{id.productname}:</td>
-             
-              
-              
-              <td>{`${id.productQuantity}*${id.productPrice}=${id.productPrice*id.productQuantity}`}</td>
-              
-              
-             
-
-
+              <td>{id.productQuantity}</td>
+              <td>{id.productname}</td>
+              <td>{id.productPrice}</td>
               </tr>
             
             )
@@ -274,7 +221,7 @@ const columns = [
               
               
               </tr>
-_____________________ 
+            _____________________ 
               <tr>
               <td>Billed By:</td>
               <td>Mr Chandler </td>
@@ -285,15 +232,11 @@ _____________________
       
         </table>
 
-        <ReactToPrint 
-          trigger={() => 
-          <Button size={25} 
-         
-          
-          >
-          <PrinterOutlined />Print</Button>} 
-          content={()=>ref.current} 
-          pageStyle="@page {size: 80mm 80mm}"/>
+        
+          <Button size={25} onClick={printHandle}>
+          <PrinterOutlined />Print</Button>
+     
+     
       
 
         </div>

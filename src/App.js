@@ -12,9 +12,7 @@ import Update from './components/Update';
 import Accordion from './components/Accordion';
 import { PosTable } from './components/PosTable';
 import Test from './components/testonly/Test';
-import { PosFunction } from './components/PosFunction';
 import { SubmitSavedproduct } from './components/SubmitSavedproduct';
-import Electron from './components/Electron';
 import { Problem } from './components/Problem/Problem';
 
 
@@ -67,10 +65,8 @@ function App() {
           <Route exact path='/' component={Login}/>
           <Route exact path ='/Accordion' component={Accordion} />
           <Route exact path ='/test' component={Test} />
-          <Route exact path ='/posfunction' component={PosFunction} />
           <Route exact path ='/products' component={Products} />
           <Route exact path ='/savedproducts' component={SubmitSavedproduct} />
-          <Route exact path ='/electron' component={Electron} />
           <Route exact path ='/problem' component={Problem} />
         </header>
       </div>
