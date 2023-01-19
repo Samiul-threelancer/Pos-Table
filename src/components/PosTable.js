@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { InvoiceSave, SavedProduct } from './API';
+import { SavedProduct } from './API';
 import { Button, Card, Input, message, Table } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
-
 import { PrinterOutlined } from '@ant-design/icons';
 import { TOKEN } from './Action/actiontype';
-import ReactToPrint from 'react-to-print'
-import {useRef} from 'react'
 
 import './table.scss'
 
@@ -18,7 +15,6 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const PosTable = () => {
     
-   const ref = useRef();
  
    const getDataLocal =()=>{
     const data = localStorage.getItem('products')
@@ -41,7 +37,6 @@ export const PosTable = () => {
     const [productPrice, setProductPrice] = useState('')
     const [productQuantity, setProductQuantity] = useState(parseInt(1))
     const [carddErr, setcardErr] = useState('')
-    const [invoice, setInvoice] = useState([])
 
    
 
@@ -110,8 +105,11 @@ export const PosTable = () => {
  
  
     const printHandle =()=>{
-  window.print()
- }
+      window.print()
+      console.log("print is goin on")
+    }
+
+
  const SubmitSavedproduct = () =>{
 
  }
@@ -159,7 +157,7 @@ const columns = [
       <div className='card-info'>
       <Card title="Add Product"  style={{ width: 400 }}>
       
-      <div className=''>
+    
 
       <span style={{color:"red"}}>{carddErr}</span>
       
@@ -169,7 +167,7 @@ const columns = [
       <Input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
       <div>
       <button type='submit' className='add_card_btn' onClick={handleSubmit} ><HiPlus size={15} /> Add Product</button>
-      </div>
+  
 
 
       </div>
@@ -179,10 +177,10 @@ const columns = [
         
 
        
-        <div className="invoice" id='invoice' >
+          <div className="invoice" >
           
-              <table style={{}} key={uuidv4} ref={ref}>
-                 <thead>
+              <table key={uuidv4}>
+              <thead>
               <tr>
               <th>Q</th>
               <th>Description</th> 
@@ -209,15 +207,15 @@ const columns = [
            ________________________
               <tr>   
               <td>VAT & Taxes</td>
-              <td>{vat_price}&nbsp;BDT</td>
+              <td>{vat_price}BDT</td>
 
               </tr>
             
             ________________________
               <tr>   
               <td>Net Total</td>
-              <td >{total_price}&nbsp;BDT</td>
-              {/* {setSelectProduct(totalprice)} */}
+              <td >{total_price}BDT</td>
+            
               
               
               </tr>
@@ -231,15 +229,14 @@ const columns = [
               
       
         </table>
-
+        </div>
         
-          <Button size={25} onClick={printHandle}>
-          <PrinterOutlined />Print</Button>
+          
      
      
       
 
-        </div>
+        
    
         </div>
          
@@ -247,22 +244,19 @@ const columns = [
 
 
 
-      <div className='user_history_page' >
-      <div className="user_history_conatiner">
-      <div className="table_section">
-       <div className="table_data_section">
+      <div className='table' >
+     
 
       
    
       <Button onClick={(e)=>SubmitSavedproduct(e)}>Save Table</Button>
 
       <Button onClick={(e)=>ClearAll(e)} type="primary" danger ghost>Clear Table</Button>
-        
+      <Button className='hide-print' size={25} onClick={printHandle}>
+          <PrinterOutlined />Print</Button>
 
       <Table columns={columns} dataSource={productinfo} /> 
-      </div> 
-      </div>
-      </div>
+    
       </div>
 
       </form>

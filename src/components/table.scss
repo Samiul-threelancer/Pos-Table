@@ -6,11 +6,7 @@
     align-items: center;
     margin-bottom: 20px;
     
-   .invoice{
-    font-size: 0.8rem;
-    margin: 10px;
-   }
-    
+   
     .input-field{
        margin-bottom: 5px;
        border-radius: 5px;
@@ -31,4 +27,28 @@
     margin-top: 15px;
     position: right;
     }
+
+    
 }
+.invoice{
+    visibility: hidden !important;
+}
+@media print{
+    body {
+        visibility: hidden;
+    }
+    .invoice
+    {
+        visibility: visible !important;
+    };
+    .hide-print{
+        visibility: hidden !important;
+    }
+    .invoice{
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+}
+
+   
