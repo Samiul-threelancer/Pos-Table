@@ -42,9 +42,9 @@ export const PosTable = () => {
 
 
         //mathmatical calculation
-        const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
-        const vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
-        const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
+        var total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
+        var vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
+        var total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
     
 
         console.log("total price before vat:", total_price_before)
@@ -182,9 +182,9 @@ const columns = [
               <table key={uuidv4}>
               <thead>
               <tr>
-              <th>Q</th>
-              <th>Description</th> 
-              <th>$$</th> 
+              <th className='quantity'>Q</th>
+              <th className='description'>Description</th> 
+              <th className='price'>$$</th> 
               </tr>
               </thead>
               <tbody>
@@ -194,9 +194,9 @@ const columns = [
                 
             return(
               <tr key={id}>
-              <td>{id.productQuantity}</td>
-              <td>{id.productname}</td>
-              <td>{id.productPrice}</td>
+              <td className='quantity'>{id.productQuantity}</td>
+              <td className='description'>{id.productname}</td>
+              <td className='price'>{id.productPrice}</td>
               </tr>
             
             )
@@ -204,22 +204,19 @@ const columns = [
                </tbody>
 
                <tfoot>
-           ________________________
+          
               <tr>   
-              <td>VAT & Taxes</td>
-              <td>{vat_price}BDT</td>
+              <td className='description'>VAT</td>
+              <td className='price'>{vat_price.toFixed(2)}BDT</td>
 
               </tr>
             
-            ________________________
+          
               <tr>   
-              <td>Net Total</td>
-              <td >{total_price}BDT</td>
-            
-              
-              
+              <td className='description'>Net Total</td>
+              <td className='price'>{total_price}BDT</td>    
               </tr>
-            _____________________ 
+      
               <tr>
               <td>Billed By:</td>
               <td>Mr Chandler </td>
@@ -230,19 +227,10 @@ const columns = [
       
         </table>
         </div>
-        
-          
-     
-     
-      
 
-        
-   
         </div>
          
-     
-
-
+ 
 
       <div className='table' >
      
