@@ -68,7 +68,7 @@ const About = () => {
                         />
                         <Carousel.Caption className='caption'>
                             <h3 className='title'>Book online and begin your dream holyday</h3>
-                            <p className='description'>Travel with the Airline of the Year </p>
+                            <p className=''>Travel with the Airline of the Year </p>
                             <Button variant="primary" className='picture-button' onClick={bookingHandle}>Book now</Button>{' '}
                             <Modal
                                 show={show}

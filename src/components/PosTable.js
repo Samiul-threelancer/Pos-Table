@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { InvoiceSave, product_submit, SavedProduct } from './API';
+import { SavedProduct } from './API';
 import { Button, Card, Input, message, Table } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
-
 import { PrinterOutlined } from '@ant-design/icons';
 import { TOKEN } from './Action/actiontype';
-import ReactToPrint from 'react-to-print'
-import {useRef} from 'react'
 
 import './table.scss'
 
@@ -19,7 +16,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const PosTable = () => {
   console.log(TOKEN)
     
-   const ref = useRef();
  
    const getDataLocal =()=>{
     const data = localStorage.getItem('products')
@@ -42,13 +38,12 @@ export const PosTable = () => {
     const [productPrice, setProductPrice] = useState('')
     const [productQuantity, setProductQuantity] = useState(parseInt(1))
     const [carddErr, setcardErr] = useState('')
-    const [invoice, setInvoice] = useState([])
 
 
         //mathmatical calculation
-        const total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
-        const vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
-        const total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
+        var total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
+        var vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
+        var total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
     
 
         console.log("total price before vat:", total_price_before)
@@ -96,55 +91,17 @@ export const PosTable = () => {
       // window.location.reload()
   
     }
-
-
-
-    
-//..............invoice..........saved_product....
-    const SubmitSavedproduct = async(e)=>{
-      e.preventDefault()  
-
-    
-      
-      
-
-        const payload = {
-          "ProductName" : productname,
-          "ProductSize" : productSize,
-          "ProductPrice" : productPrice,
-          "ProductQuantity" : productQuantity,
-          
-     
-            }
-       
-
-            try {
-
-                const res = await product_submit(payload, TOKEN)
-                message.success("New product added")
-                console.log("paylodad", payload)
-
-              } 
-                  catch (err) {
-                  console.warn(err.message)             
-              }
-              
-              //auto cursor
-      
-        // {    
-        //   var elts = document.getElementsByClassName('name')
-        //   Array.from(elts).forEach(function(elt){
-        //   elt.addEventListener("keyup", function(event) {
-        //   // Number 13 is the "Enter" key on the keyboard
-        //   if (event.keyCode === 13 || elt.value.length == 3) {
-        //   // Focus on the next sibling
-        //   elt.nextElementSibling.focus()
-        //   }
-        //   });
-        //   })
-        // }
+ 
+ 
+    const printHandle =()=>{
+      window.print()
+      console.log("print is goin on")
     }
 
+
+ const SubmitSavedproduct = () =>{
+
+ }
 
     
   
@@ -189,7 +146,7 @@ const columns = [
       <div className='card-info'>
       <Card title="Add Product"  style={{ width: 400 }}>
       
-      <div className=''>
+    
 
       <span style={{color:"red"}}>{carddErr}</span>
       
@@ -199,7 +156,7 @@ const columns = [
       <Input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
       <div>
       <button type='submit' className='add_card_btn' onClick={handleSubmit} ><HiPlus size={15} /> Add Product</button>
-      </div>
+  
 
 
       </div>
@@ -209,39 +166,26 @@ const columns = [
         
 
        
-        <div className="invoice" id='invoice' >
+          <div className="invoice" >
           
-              <table style={{}} key={uuidv4} ref={ref}>
-                 <thead>
+              <table key={uuidv4}>
+              <thead>
               <tr>
-              <th>Product</th> 
-    
-              {/* <td> <h4>Sz</h4></td> */}
-             
-       
-              <th>Qty*Unit </th>
-             
-              
+              <th className='quantity'>Q</th>
+              <th className='description'>Description</th> 
+              <th className='price'>$$</th> 
               </tr>
               </thead>
-
-
               <tbody>
+
 
               {productinfo.map((id, i)=>{
                 
             return(
               <tr key={id}>
-              <td>{id.productname}:</td>
-             
-              
-              
-              <td>{`${id.productQuantity}*${id.productPrice}=${id.productPrice*id.productQuantity}`}</td>
-              
-              
-             
-
-
+              <td className='quantity'>{id.productQuantity}</td>
+              <td className='description'>{id.productname}</td>
+              <td className='price'>{id.productPrice}</td>
               </tr>
             
             )
@@ -249,22 +193,19 @@ const columns = [
                </tbody>
 
                <tfoot>
-           ________________________
+          
               <tr>   
-              <td>VAT & Taxes</td>
-              <td>{vat_price}&nbsp;BDT</td>
+              <td className='description'>VAT</td>
+              <td className='price'>{vat_price.toFixed(2)}BDT</td>
 
               </tr>
             
-            ________________________
+          
               <tr>   
-              <td>Net Total</td>
-              <td >{total_price}&nbsp;BDT</td>
-              {/* {setSelectProduct(totalprice)} */}
-              
-              
+              <td className='description'>Net Total</td>
+              <td className='price'>{total_price}BDT</td>    
               </tr>
-_____________________ 
+      
               <tr>
               <td>Billed By:</td>
               <td>Mr Chandler </td>
@@ -274,42 +215,25 @@ _____________________
               
       
         </table>
-
-        <ReactToPrint 
-          trigger={() => 
-          <Button size={25} 
-         
-          
-          >
-          <PrinterOutlined />Print</Button>} 
-          content={()=>ref.current} 
-          pageStyle="@page {size: 80mm 80mm}"/>
-      
+        </div>
 
         </div>
-   
-        </div>
          
+ 
+
+      <div className='table' >
      
-
-
-
-      <div className='user_history_page' >
-      <div className="user_history_conatiner">
-      <div className="table_section">
-       <div className="table_data_section">
 
       
    
       <Button onClick={(e)=>SubmitSavedproduct(e)}>Save Table</Button>
 
       <Button onClick={(e)=>ClearAll(e)} type="primary" danger ghost>Clear Table</Button>
-        
+      <Button className='hide-print' size={25} onClick={printHandle}>
+          <PrinterOutlined />Print</Button>
 
       <Table columns={columns} dataSource={productinfo} /> 
-      </div> 
-      </div>
-      </div>
+    
       </div>
 
       </form>

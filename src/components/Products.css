@@ -180,53 +180,17 @@ padding-top: 20px ;
         font-family: monospace;
     } */
 }
-.tbody{
-    font-family: monospace;
-}
-.NIT_header{
-    align-items: center;
-}
 
-.card-button{
+
+
     
-    width: 90px;
-    height: 50px;
-}
-.cardbutton{
-    margin-top: 25px;
-}
+ 
+
 .header-title{
     padding-bottom: 5px;
 }
-.search{
-    margin-bottom: 20px;
-    
-}
-.search input{
-    width: 500px;
-    height: 30px; 
-    
-}
-.search label {
-    font-size: 1.5rem;
-    font-weight: bold ;
-}
-.removebutton{
-    background-color: aliceblue;
-}
-.removebutton:hover{
-    background-color: rgb(80, 81, 82); 
 
-}
-/* .parent{
-    margin
-} */
 
-@media print{
-    .parencontainer{
-        visibility: hidden;
-    }
-    .nitheader{
-        visibility: visible;
-    }
-}
+
+
+
