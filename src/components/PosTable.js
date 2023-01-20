@@ -64,6 +64,7 @@ export const PosTable = () => {
       }
       setproductinfo([...productinfo, product])
       
+      
           
       if (productname===''||productSize===''||productPrice===''||productQuantity===''){
         return
@@ -74,7 +75,10 @@ export const PosTable = () => {
         useEffect(()=>{
 
           localStorage.setItem('products',JSON.stringify(productinfo));
+         
         },[productinfo])
+
+        
 
 
        
@@ -169,9 +173,16 @@ const columns = [
 
        
           <div className="invoice" >
+
+          <p className='center'>
+            <h1>OnlineShop</h1>
+            Moghbazar, Dhaka  
+          </p>
           
               <table >
+              
               <thead>
+             
               <tr>
               <th className='quantity'>Q</th>
               <th className='description'>Description</th> 
@@ -210,7 +221,7 @@ const columns = [
               </tr>
       
               <tr>
-              <td>Billed By:</td>
+              <td>Billed By::</td>
               <td>Mr Chandler </td>
               
               </tr>
@@ -218,6 +229,7 @@ const columns = [
               
       
         </table>
+        <p className='center'>Thank you for your purchase.</p>
         </div>
 
         </div>
