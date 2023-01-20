@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { InvoiceSave, SavedProduct } from './API';
+import { InvoiceSave, product_submit, SavedProduct } from './API';
 import { Button, Card, Input, message, Table } from 'antd';
 import { HiTrash, HiPlus } from "react-icons/hi2";
 
@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 export const PosTable = () => {
+  console.log(TOKEN)
     
    const ref = useRef();
  
@@ -34,7 +35,7 @@ export const PosTable = () => {
 
  
    //mian product info
-    const [productinfo, setproductinfo] = useState(getDataLocal())
+    const [productinfo, setproductinfo] = useState([getDataLocal()])
 
     const [productname, setproductname] = useState('')
     const [productSize, setProductSize] = useState('')
@@ -42,8 +43,6 @@ export const PosTable = () => {
     const [productQuantity, setProductQuantity] = useState(parseInt(1))
     const [carddErr, setcardErr] = useState('')
     const [invoice, setInvoice] = useState([])
-
-   
 
 
         //mathmatical calculation
@@ -56,11 +55,7 @@ export const PosTable = () => {
         console.log("vat__price:", vat_price)
         console.log("total__price:", total_price)
         
-         
-        
-        
 
- 
     const handleSubmit =(e)=>{
       e.preventDefault();
      
@@ -75,14 +70,10 @@ export const PosTable = () => {
       
           
       if (productname===''||productSize===''||productPrice===''||productQuantity===''){
-        setcardErr("Please all the fields")
-       
-      } 
+        setcardErr("Please fill all the fields") 
+      }    return
             setproductinfo([...productinfo, product])
-
-      
       }
-
         useEffect(()=>{
 
           localStorage.setItem('products',JSON.stringify(productinfo));
@@ -92,9 +83,7 @@ export const PosTable = () => {
        
 
     const deleteProduct=(ID)=>{
-    
-      const filteredProduct = productinfo.filter((prdouct)=>{
-        
+      const filteredProduct = productinfo.filter((prdouct)=>{  
         return prdouct.ID !== ID;
       })
       setproductinfo(filteredProduct)
@@ -104,7 +93,7 @@ export const PosTable = () => {
       setproductinfo([])
       message.warning("All data clear")
       
-      window.location.reload()
+      // window.location.reload()
   
     }
 
@@ -115,14 +104,15 @@ export const PosTable = () => {
     const SubmitSavedproduct = async(e)=>{
       e.preventDefault()  
 
-      {setInvoice([...productinfo, vat_price, total_price])
-        console.log("invoiceeeeeeeeeeeee",invoice)} 
+    
       
       
 
         const payload = {
-            // ...productinfo,
-            "invoice": invoice,
+          "ProductName" : productname,
+          "ProductSize" : productSize,
+          "ProductPrice" : productPrice,
+          "ProductQuantity" : productQuantity,
           
      
             }
@@ -130,7 +120,7 @@ export const PosTable = () => {
 
             try {
 
-                const res = await InvoiceSave(payload, TOKEN)
+                const res = await product_submit(payload, TOKEN)
                 message.success("New product added")
                 console.log("paylodad", payload)
 
