@@ -43,7 +43,7 @@ export const PosTable = () => {
         //mathmatical calculation
         var total_price_before = getDataLocal().reduce(( prev, next ) => ( prev  + (parseInt(next.productPrice) * parseInt(next.productQuantity))), 0 )
         var vat_price = getDataLocal().reduce(( prev, next ) => ( prev + parseInt(total_price_before)*0.05), 0 )
-        var total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(total_price_before) + parseInt(vat_price)), 0 )
+        var total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(next.total_price_before) + parseInt(next.vat_price)), 0 )
     
 
         console.log("total price before vat:", total_price_before)
@@ -62,12 +62,14 @@ export const PosTable = () => {
         productQuantity
 
       }
+      setproductinfo([...productinfo, product])
       
           
       if (productname===''||productSize===''||productPrice===''||productQuantity===''){
+        return
         setcardErr("Please fill all the fields") 
-      }    return
-            setproductinfo([...productinfo, product])
+      }    
+           
       }
         useEffect(()=>{
 
@@ -85,8 +87,8 @@ export const PosTable = () => {
      }
 
      const ClearAll =()=>{
-      setproductinfo([])
-      message.warning("All data clear")
+      setproductinfo('')
+      // message.warning("All data clear")
       
       // window.location.reload()
   
@@ -168,7 +170,7 @@ const columns = [
        
           <div className="invoice" >
           
-              <table key={uuidv4}>
+              <table >
               <thead>
               <tr>
               <th className='quantity'>Q</th>
@@ -179,17 +181,18 @@ const columns = [
               <tbody>
 
 
-              {productinfo.map((id, i)=>{
+              {productinfo.map((ID, i)=>{
                 
             return(
-              <tr key={id}>
-              <td className='quantity'>{id.productQuantity}</td>
-              <td className='description'>{id.productname}</td>
-              <td className='price'>{id.productPrice}</td>
+              <tr >
+              <td className='quantity'>{ID.productQuantity}</td>
+              <td className='description'>{ID.productname}</td>
+              <td className='price'>{ID.productPrice}</td>
               </tr>
             
             )
                })}
+
                </tbody>
 
                <tfoot>
@@ -203,7 +206,7 @@ const columns = [
           
               <tr>   
               <td className='description'>Net Total</td>
-              <td className='price'>{total_price}BDT</td>    
+              <td className='price'>{total_price.toFixed(2)}BDT</td>    
               </tr>
       
               <tr>
