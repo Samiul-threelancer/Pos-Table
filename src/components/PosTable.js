@@ -8,13 +8,14 @@ import { TOKEN } from './Action/actiontype';
 import './table.scss'
 
 import { v4 as uuidv4 } from 'uuid';
+import { getDropdownMenuPlacement } from 'react-bootstrap/esm/DropdownMenu';
 
 
 
 
 
 export const PosTable = () => {
-  console.log(TOKEN)
+  // console.log(TOKEN)
     
  
    const getDataLocal =()=>{
@@ -26,7 +27,7 @@ export const PosTable = () => {
       return[]
     }
   }
-  console.log("getDataLocal", getDataLocal())
+  // console.log("getDataLocal", getDataLocal())
  
 
  
@@ -36,7 +37,7 @@ export const PosTable = () => {
     const [productname, setproductname] = useState('')
     const [productSize, setProductSize] = useState('')
     const [productPrice, setProductPrice] = useState('')
-    const [productQuantity, setProductQuantity] = useState(parseInt(1))
+    const [productQuantity, setProductQuantity] = useState('')
     const [carddErr, setcardErr] = useState('')
 
 
@@ -46,30 +47,33 @@ export const PosTable = () => {
         var total_price = getDataLocal().reduce(( prev, next ) => ( prev  + parseInt(next.total_price_before) + parseInt(next.vat_price)), 0 )
     
 
-        console.log("total price before vat:", total_price_before)
-        console.log("vat__price:", vat_price)
-        console.log("total__price:", total_price)
+        // console.log("total price before vat:", total_price_before)
+        // console.log("vat__price:", vat_price)
+        // console.log("total__price:", total_price)
         
 
     const handleSubmit =(e)=>{
-      e.preventDefault();
+      // e.preventDefault();
+      if (productname===''||productSize===''||productPrice===''||productQuantity===''){
+        
+        setcardErr("Please fill all the fields") 
+        return
+      } 
      
       let product={
         ID: uuidv4(),
-        productname,
-        productSize,
-        productPrice,
-        productQuantity
+        productname:'',
+        productSize:'',
+        productPrice:'',
+        productQuantity:''
 
       }
       setproductinfo([...productinfo, product])
       
-      
+      // document.getElementById('reset').reset()
+
           
-      if (productname===''||productSize===''||productPrice===''||productQuantity===''){
-        return
-        setcardErr("Please fill all the fields") 
-      }    
+         
            
       }
         useEffect(()=>{
@@ -78,8 +82,23 @@ export const PosTable = () => {
          
         },[productinfo])
 
-        
+        //AutoEnter to next Fields
+          var allfields = document.querySelectorAll(".input-field")
+          console.log("allfieldsallfields",allfields)
+          for (var i = 0; i<allfields.length; i++){
+            allfields[i].addEventListener("keyup", function(event){
+              console.log("Ascii code", event.target.value)
 
+              if (event.keyCode === 13){
+                event.preventDefault();
+                if(this.parentElement.nextElementSibling.querySelector('input')){
+                  this.parentElement.nextElementSibling.querySelector('input').focus()
+                }
+              }
+            })
+          }
+       
+        
 
        
 
@@ -91,10 +110,8 @@ export const PosTable = () => {
      }
 
      const ClearAll =()=>{
-      setproductinfo('')
-      // message.warning("All data clear")
-      
-      // window.location.reload()
+      // setproductinfo('')
+
   
     }
  
@@ -148,25 +165,24 @@ const columns = [
   return ( 
     <>
     <div className='container'>
-    <form action="" id='form'>
+    
       <div className='card-info'>
-      <Card title="Add Product"  style={{ width: 400 }}>
+      
       
     
-
+      <form id='reset'>
       <span style={{color:"red"}}>{carddErr}</span>
-      
-      <Input className='input-field' type='input' placeholder='Product Name' name="name" id="input1" value={productname} onChange={(e) => setproductname(e.target.value) }  required />
-      <Input className='input-field' type='input' placeholder='Product Size' name="name" id="input2" value={productSize} onChange={(e) => setProductSize(e.target.value)} required />   
-      <Input className='input-field' type='number' placeholder='Price' name="name" id="input3" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
-      <Input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
-      <div>
-      <button type='submit' className='add_card_btn' onClick={handleSubmit} ><HiPlus size={15} /> Add Product</button>
-  
-
-
+      <div className=''>
+      <input className='input-field' type='input' placeholder='Product Name' name="name" id="input1" value={productname} onChange={(e) => setproductname(e.target.value) }  required />
+      <input className='input-field' type='input' placeholder='Product Size' name="name" id="input2" value={productSize} onChange={(e) => setProductSize(e.target.value)} required />   
+      <input className='input-field' type='number' placeholder='Price' name="name" id="input3" value={productPrice} onChange={(e) => setProductPrice(e.target.value)} required />
+      <input className='input-field' type='number' placeholder='Quantity' name="name" id="input4" value={productQuantity} onChange={(e) => setProductQuantity(e.target.value)} required />
       </div>
-      </Card>
+      <div>
+      <button type='submit' className='add_card_btn' onSubmit={handleSubmit} ><HiPlus size={15} /> Add Product</button>
+      </div>
+      </form>
+   
 
      
         
@@ -251,7 +267,7 @@ const columns = [
     
       </div>
 
-      </form>
+     
       </div>
 
       </>

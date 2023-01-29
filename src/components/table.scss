@@ -8,8 +8,13 @@
     
    
     .input-field{
-       margin-bottom: 5px;
-       border-radius: 5px;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 2px;
+        display: flex;
+        ::placeholder {
+            color: red;
+          }
        
     }
     .add_card_btn{
@@ -33,7 +38,7 @@
 .invoice{
     width: 200px;
     max-width: 200px;
-    // visibility: hidden !important;
+    visibility: hidden !important;
     *{
         font-size: 12px;
         font-family: 'Times New Roman';
